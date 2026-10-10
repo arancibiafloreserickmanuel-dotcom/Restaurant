@@ -1,3 +1,13 @@
+---
+## Closing summary (TOP)
+
+- **What happened:** Ordering menu product photos used `object-fit: cover` and cropped offer-poster artwork (title/price bands cut off).
+- **What was done:** Menu grid, featured, and detail images switched to `object-fit: contain` with letterbox background; hover image zoom/scale removed. Public-menu thumbs left unchanged.
+- **What was tested:** Puppeteer checks on desktop (≥4-col), mobile (~390px), hover, featured, detail, public-menu out-of-scope, front build, and landing smoke — **Overall PASS**.
+- **Why closed:** All acceptance criteria passed; tester handed off as CLOSED.
+- **Closed at (UTC):** 2026-10-10 17:54
+---
+
 # Menu photos are cropped and cut off the offer artwork
 
 ## GitHub Issues
@@ -34,3 +44,32 @@ Same crop pattern appears on featured cards and in product detail. Goal: show th
 7. Out of scope check: `/public-menu/…` 72×72 thumbs still use their existing crop (unchanged).
 8. Front build: `docker logs --since 10m pos-front` — no TypeScript/Angular compile errors after the SCSS change.
 9. Optional smoke: `BASE_URL=http://127.0.0.1:14202 LANDING_VERSION_ONLY=1` landing version test (host Chromium + container `node_modules` via `NODE_PATH` if needed).
+
+## Test report
+
+1. **Date/time (UTC):** 2026-10-10T17:49:53Z start → 2026-10-10T17:53:34Z end. Log window: `pos-front` since ~17:45Z (post-SCSS rebuild).
+2. **Environment:** `docker-compose.yml` + `docker-compose.dev.yml`; HAProxy `http://127.0.0.1:14202`; branch `development`. Puppeteer headless Chromium (`/snap/bin/chromium`). Active Take Away table token from DB. Demo products had no `image_filename`; temporarily assigned existing upload files for visual checks, then cleared after the run.
+3. **What was tested:** Ordering menu grid / featured / detail `object-fit: contain`, no image hover scale, mobile 390px, public-menu 72×72 still `cover`, front build clean, optional landing smoke.
+4. **Results:**
+   - Desktop ≥4-column grid + product `object-fit: contain` — **PASS** (`gridCols=4`, computed `object-fit: contain`, letterboxing on `--color-bg` container).
+   - Hover does not scale/crop product image — **PASS** (`transform: none` before/after hover on `img.product-image`).
+   - Featured images `contain` — **PASS** (`img.featured-image` → `object-fit: contain`).
+   - Detail hero `contain` — **PASS** (`img.detail-image` → `object-fit: contain`, 600×338 frame).
+   - Mobile (~390px) full-poster `contain` — **PASS**.
+   - Card name/price under photo present — **PASS** (e.g. name + `€…` under cards).
+   - Public-menu 72×72 thumbs still `cover` — **PASS** (`img.public-menu-product-image` 72×72 `cover`).
+   - Front build clean — **PASS** (bundle complete; no TS/NG compile errors in window).
+   - Optional landing smoke — **PASS** (`LANDING_VERSION_ONLY=1` → version + Restaurant Demo card).
+5. **Overall:** **PASS**
+6. **Product owner feedback:** Offer artwork on the order menu now letterboxes instead of cropping, so poster title/price bands stay visible on grid, featured, and detail. Hover no longer zooms the photo. Public-menu thumbs correctly left alone.
+7. **URLs tested:**
+   1. `http://127.0.0.1:14202/menu/6a90d7b9-961d-4ba0-807d-fb308c5ff0a3` (desktop 1400×900)
+   2. `http://127.0.0.1:14202/menu/6a90d7b9-961d-4ba0-807d-fb308c5ff0a3` (viewport 390×844)
+   3. `http://127.0.0.1:14202/public-menu/1`
+   4. `http://127.0.0.1:14202/` (landing smoke)
+8. **Relevant log excerpts:**
+   ```
+   Application bundle generation complete. [0.967 seconds] - 2026-10-10T17:46:04.573Z
+   Component update sent to client(s).
+   ```
+   No `Application bundle generation failed` / TS errors in `pos-front` for the test window. Puppeteer: `Overall: PASS (0 failed)`.
