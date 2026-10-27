@@ -95,7 +95,7 @@
     &.active {
         background: var(--color-primary);
         border-color: var(--color-primary);
-        color: white;
+        color: var(--color-on-primary);
     }
 
     .tab-icon {
@@ -149,7 +149,7 @@
 
 .tab-badge {
     background: var(--color-primary);
-    color: white;
+    color: var(--color-on-primary);
     padding: 2px 8px;
     border-radius: 12px;
     font-size: 0.75rem;
@@ -225,7 +225,7 @@
 
         &.active {
             background: var(--color-primary);
-            color: white;
+            color: var(--color-on-primary);
         }
     }
 }

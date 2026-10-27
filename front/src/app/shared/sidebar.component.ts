@@ -67,7 +67,13 @@ type NavGroupKey = 'operations' | 'planning' | 'catalog' | 'admin';
                 [attr.aria-label]="brandTitle()"
                 data-testid="sidebar-brand-home"
                 (click)="closeSidebar()"
-              >POS</a>
+              >
+                @if (tenantLogoUrl(); as logoUrl) {
+                  <img class="brand-logo" [src]="logoUrl" [alt]="tenantOrgName() || 'Restaurant'" />
+                } @else {
+                  {{ tenantOrgName() || 'Restaurant' }}
+                }
+              </a>
               <app-language-picker appearance="icon" class="sidebar-lang"></app-language-picker>
             </div>
             <button
@@ -83,7 +89,7 @@ type NavGroupKey = 'operations' | 'planning' | 'catalog' | 'admin';
                 <span class="tenant-id" title="Tenant ID">{{ tid }}</span>
               }
             </button>
-            @if (tenantOrgName()) {
+            @if (tenantOrgName() && tenantLogoUrl()) {
               <span class="sidebar-org-name" [attr.title]="tenantOrgName()!" [attr.aria-label]="tenantOrgName()!">{{
                 tenantOrgName()
               }}</span>
@@ -458,10 +464,9 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     return id != null ? id : null;
   });
 
-  brandTitle = computed(() => {
-    const org = this.tenantOrgName();
-    return org ? `POS (${org})` : 'POS';
-  });
+  tenantLogoUrl = computed(() => this.api.tenantLogoUrl());
+
+  brandTitle = computed(() => this.tenantOrgName() || 'Restaurant');
 
   openChangelog() {
     this.changelogModal().show();
@@ -469,6 +474,8 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.api.ensureTenantUiModulesLoaded().subscribe();
+    // Brand name and logo for the sidebar.
+    this.api.getTenantSettings().subscribe({ error: () => undefined });
     this.api.user$.subscribe(user => {
       this.user.set(user);
       if (user && String(user.role).toLowerCase() === 'owner') {

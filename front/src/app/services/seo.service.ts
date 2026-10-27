@@ -12,46 +12,46 @@ export interface SeoPageConfig {
   noindex?: boolean;
 }
 
-const BRAND = 'Satisfecho';
+const BRAND = 'Restaurant';
 const DEFAULT_DESCRIPTION =
-  'Open-source restaurant platform — QR menus, ordering, reservations, payments, kitchen & bar displays, shifts, inventory, and reports.';
+  'Gestión para restaurantes: carta con QR, pedidos, reservas, pagos, pantalla de cocina y barra, turnos, inventario e informes.';
 const OG_IMAGE_PATH = '/og-image.png';
 
-/** Exact marketing / public shell pages with fixed English meta (crawler-friendly). */
+/** Exact marketing / public shell pages with fixed Spanish meta. */
 const MARKETING_PAGES: Record<string, Omit<SeoPageConfig, 'path'>> = {
   '/': {
-    title: `${BRAND} — Open-source restaurant platform`,
+    title: `${BRAND} — Gestión para restaurantes`,
     description: DEFAULT_DESCRIPTION,
   },
   '/features': {
-    title: `Features — ${BRAND}`,
+    title: `Funciones — ${BRAND}`,
     description:
-      'Everything Satisfecho offers: QR menus, online payments, kitchen displays, shift planning, inventory, and more — one platform for guests, staff, and owners.',
+      'Todo lo que ofrece Restaurant: carta con QR, pagos en línea, pantallas de cocina, turnos, inventario y más, en una sola plataforma.',
   },
   '/about': {
-    title: `About us — ${BRAND}`,
+    title: `Sobre nosotros — ${BRAND}`,
     description:
-      'Satisfecho is an open-source restaurant platform operated by Amvara Consulting S.L. Learn who we are and how the product helps restaurants.',
+      'Restaurant es una plataforma de gestión para restaurantes: carta con QR, pedidos, pantalla de cocina, inventario e informes.',
   },
   '/register': {
-    title: `Create your restaurant — ${BRAND}`,
-    description: `Sign up for ${BRAND} and launch QR menus, ordering, and reservations for your restaurant.`,
+    title: `Crea tu restaurante — ${BRAND}`,
+    description: `Regístrate en ${BRAND} y lanza tu carta con QR, pedidos y reservas.`,
   },
   '/signup': {
-    title: `Create your restaurant — ${BRAND}`,
-    description: `Sign up for ${BRAND} and launch QR menus, ordering, and reservations for your restaurant.`,
+    title: `Crea tu restaurante — ${BRAND}`,
+    description: `Regístrate en ${BRAND} y lanza tu carta con QR, pedidos y reservas.`,
   },
   '/orders': {
-    title: `Order online — ${BRAND}`,
-    description: `Find restaurants on ${BRAND} and place take-away or home orders online.`,
+    title: `Pide en línea — ${BRAND}`,
+    description: `Encuentra restaurantes en ${BRAND} y haz pedidos para llevar o a domicilio.`,
   },
   '/terms': {
-    title: `Terms of service — ${BRAND}`,
-    description: `Terms of service for the ${BRAND} restaurant platform.`,
+    title: `Términos del servicio — ${BRAND}`,
+    description: `Términos del servicio de la plataforma ${BRAND}.`,
   },
   '/privacy': {
-    title: `Privacy policy — ${BRAND}`,
-    description: `Privacy policy for the ${BRAND} restaurant platform.`,
+    title: `Política de privacidad — ${BRAND}`,
+    description: `Política de privacidad de la plataforma ${BRAND}.`,
   },
 };
 
@@ -120,13 +120,13 @@ export class SeoService {
 
   /** Public /features/:slug detail pages (fixed English meta for crawlers). */
   applyFeatureDetail(path: string, title: string, description: string): void {
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://satisfecho.de';
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost';
     this.applyTags({ title, description, path }, origin);
   }
 
   applyForUrl(rawUrl: string): void {
     const path = this.normalizePath(rawUrl);
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://satisfecho.de';
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost';
 
     if (this.isNoindexPath(path)) {
       this.applyTags({
@@ -181,7 +181,7 @@ export class SeoService {
 
   private setOgBasics(opts: { title: string; description: string; url: string }): void {
     const image = this.absoluteUrl(
-      typeof window !== 'undefined' ? window.location.origin : 'https://satisfecho.de',
+      typeof window !== 'undefined' ? window.location.origin : 'http://localhost',
       OG_IMAGE_PATH,
     );
     this.meta.updateTag({ property: 'og:type', content: 'website' });

@@ -968,7 +968,7 @@ const STAFF_ORDERS_ROLES = new Set([
     .floor-tab:hover { background: var(--color-bg); color: var(--color-text); }
     .floor-tab.active {
       background: var(--color-primary);
-      color: white;
+      color: var(--color-on-primary);
     }
     .floor-tab.active.editing {
       background: transparent;
@@ -1429,7 +1429,7 @@ const STAFF_ORDERS_ROLES = new Set([
 
     .add-table-btn.active-placement {
       background: var(--color-primary);
-      color: white;
+      color: var(--color-on-primary);
       border-color: var(--color-primary);
     }
 

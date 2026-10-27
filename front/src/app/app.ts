@@ -3,6 +3,7 @@ import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { LanguageService } from './services/language.service';
 import { SeoService } from './services/seo.service';
+import { ThemeService } from './shared/theme.service';
 import { environment } from '../environments/environment';
 
 @Component({
@@ -19,6 +20,8 @@ export class App implements OnInit, OnDestroy {
   /** Inject so LanguageService initializes at bootstrap and applies browser default language everywhere from first load. */
   private languageService = inject(LanguageService);
   private seo = inject(SeoService);
+  /** Inject so the saved colour theme is applied at bootstrap. */
+  private themeService = inject(ThemeService);
 
   ngOnInit() {
     this.seo.start();

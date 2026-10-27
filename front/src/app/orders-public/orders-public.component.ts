@@ -140,7 +140,7 @@ import { LanguagePickerComponent } from '../shared/language-picker.component';
       display: inline-block;
       padding: var(--space-3) var(--space-5);
       background: var(--color-primary);
-      color: white;
+      color: var(--color-on-primary);
       border-radius: var(--radius-md);
       font-weight: 500;
       text-decoration: none;

@@ -226,7 +226,7 @@ import { FocusFirstInputDirective } from '../shared/focus-first-input.directive'
       .btn-primary {
         padding: var(--space-3) var(--space-4);
         background: var(--color-primary);
-        color: #fff;
+        color: var(--color-on-primary);
         border: none;
         border-radius: var(--radius-md);
         font-weight: 500;

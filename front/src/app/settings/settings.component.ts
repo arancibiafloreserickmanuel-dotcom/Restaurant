@@ -18,6 +18,7 @@ import {
   OpeningHoursOverrideRow,
 } from '../services/api.service';
 import { SidebarComponent } from '../shared/sidebar.component';
+import { AppearanceSettingsComponent } from './appearance-settings.component';
 import { FocusFirstInputDirective } from '../shared/focus-first-input.directive';
 import { TranslationsComponent } from '../translations/translations.component';
 import { KitchenStationsSettingsComponent } from './kitchen-stations-settings.component';
@@ -95,6 +96,7 @@ const SETTINGS_SECTION_HASH: Record<SettingsSectionId, string> = {
     CommonModule,
     FormsModule,
     SidebarComponent,
+    AppearanceSettingsComponent,
     FocusFirstInputDirective,
     TranslateModule,
     TranslationsComponent,
@@ -980,6 +982,8 @@ const SETTINGS_SECTION_HASH: Record<SettingsSectionId, string> = {
                     <p>{{ 'SETTINGS.SUBTITLE' | translate }}</p>
                   </div>
                   
+                  <app-appearance-settings />
+
                   <!-- Logo -->
                   <div class="form-group">
                     <label>{{ 'SETTINGS.LOGO' | translate }}</label>
@@ -1096,7 +1100,7 @@ const SETTINGS_SECTION_HASH: Record<SettingsSectionId, string> = {
                       <input
                         type="color"
                         id="public_primary_color"
-                        [value]="formData.public_primary_color || '#2563EB'"
+                        [value]="formData.public_primary_color || '#A4501F'"
                         (input)="formData.public_primary_color = $any($event.target).value"
                         class="color-input"
                         data-testid="settings-public-primary-color"
@@ -1105,14 +1109,14 @@ const SETTINGS_SECTION_HASH: Record<SettingsSectionId, string> = {
                         type="text"
                         [(ngModel)]="formData.public_primary_color"
                         name="public_primary_color_hex"
-                        placeholder="#2563EB"
+                        placeholder="#A4501F"
                         class="hex-input"
                         data-testid="settings-public-primary-color-hex"
                       />
                       <button
                         type="button"
                         class="btn btn-secondary btn-sm"
-                        (click)="formData.public_primary_color = '#2563EB'"
+                        (click)="formData.public_primary_color = '#A4501F'"
                         [attr.title]="'SETTINGS.PRESET_PRIMARY_BLUE' | translate"
                       >
                         {{ 'SETTINGS.PRESET_PRIMARY_BLUE' | translate }}
@@ -2213,7 +2217,7 @@ const SETTINGS_SECTION_HASH: Record<SettingsSectionId, string> = {
     .settings-nav-item.active {
       background: var(--color-primary);
       border-color: var(--color-primary);
-      color: white;
+      color: var(--color-on-primary);
     }
 
     .settings-nav-icon {
@@ -2959,7 +2963,7 @@ const SETTINGS_SECTION_HASH: Record<SettingsSectionId, string> = {
 
     .btn-primary {
       background: var(--color-primary);
-      color: white;
+      color: var(--color-on-primary);
 
       &:hover:not(:disabled) {
         background: var(--color-primary-hover);
@@ -3312,6 +3316,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   /** ISO 4217 codes for per-tenant prices (GitHub #41). */
   readonly tenantCurrencyCodes: string[] = [
+    'BOB',
     'EUR',
     'USD',
     'GBP',
@@ -3347,7 +3352,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   prepaymentMinorUnits = 0;
 
   getPrepaymentMinorDigits(): number {
-    const raw = (this.formData.currency_code || 'EUR').trim().toUpperCase();
+    const raw = (this.formData.currency_code || 'BOB').trim().toUpperCase();
     if (!raw || raw.length !== 3) {
       return 2;
     }
@@ -3372,8 +3377,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   getPrepaymentCurrencySymbol(): string {
-    const raw = (this.formData.currency_code || 'EUR').trim().toUpperCase();
-    const code = raw.length === 3 ? raw : 'EUR';
+    const raw = (this.formData.currency_code || 'BOB').trim().toUpperCase();
+    const code = raw.length === 3 ? raw : 'BOB';
     try {
       const parts = new Intl.NumberFormat(undefined, {
         style: 'currency',
@@ -3386,8 +3391,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   getPrepaymentCurrencyLabel(): string {
-    const raw = (this.formData.currency_code || 'EUR').trim().toUpperCase();
-    const code = raw.length === 3 ? raw : 'EUR';
+    const raw = (this.formData.currency_code || 'BOB').trim().toUpperCase();
+    const code = raw.length === 3 ? raw : 'BOB';
     const sym = this.getPrepaymentCurrencySymbol();
     return sym && sym !== code ? `${code} (${sym})` : code;
   }
@@ -3669,7 +3674,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     ccc: null,
     default_tax_id: null,
     opening_hours: null,
-    currency_code: 'EUR',
+    currency_code: 'BOB',
     stripe_secret_key: null,
     stripe_publishable_key: null,
     revolut_merchant_secret: null,
@@ -3920,7 +3925,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
           ccc: settings.ccc || null,
           default_tax_id: settings.default_tax_id ?? null,
           opening_hours: settings.opening_hours || null,
-          currency_code: settings.currency_code || 'EUR',
+          currency_code: settings.currency_code || 'BOB',
           stripe_secret_key: null,
           stripe_publishable_key: settings.stripe_publishable_key || null,
           revolut_merchant_secret: null,
@@ -4227,7 +4232,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   formatProviderPrice(cents: number | null | undefined): string {
     if (cents == null) return '—';
-    return (cents / 100).toFixed(2) + ' €';
+    return (cents / 100).toFixed(2) + ' Bs';
   }
 
   openAddProviderModal() {

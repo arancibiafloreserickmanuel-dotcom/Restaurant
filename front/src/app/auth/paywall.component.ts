@@ -15,7 +15,7 @@ import { LanguagePickerComponent } from '../shared/language-picker.component';
       <div class="paywall-card">
         <div class="paywall-header">
           <div>
-            <p class="brand">Satisfecho</p>
+            <p class="brand">Restaurant</p>
             <h1>{{ 'PAYWALL.TITLE' | translate }}</h1>
             <p class="lead">{{ 'PAYWALL.LEAD' | translate }}</p>
           </div>
@@ -158,7 +158,7 @@ import { LanguagePickerComponent } from '../shared/language-picker.component';
       }
       .btn-primary {
         background: var(--color-primary);
-        color: #fff;
+        color: var(--color-on-primary);
       }
       .btn-primary:disabled {
         opacity: 0.6;

@@ -277,27 +277,42 @@ import {
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
       text-decoration: none;
-      transition: all 0.15s ease;
+      box-shadow: var(--elev-1), var(--shine-soft);
+      transition: all 0.2s ease;
 
       &:hover {
-        border-color: var(--color-primary);
-        box-shadow: var(--shadow-md);
-        transform: translateY(-2px);
+        border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
+        box-shadow: var(--elev-2), 0 0 0 4px color-mix(in srgb, var(--color-primary) 8%, transparent);
+        transform: translateY(-3px);
       }
     }
 
     .action-icon {
+      --chip: var(--color-primary);
       width: 48px;
       height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--color-primary-light);
+      background: var(--chip);
+      background-image: var(--gloss);
       border-radius: var(--radius-md);
-      color: var(--color-primary);
+      color: #fff;
       margin-bottom: var(--space-4);
+      box-shadow: 0 8px 18px color-mix(in srgb, var(--chip) 40%, transparent), var(--shine);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
+    .action-card:hover .action-icon {
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 12px 24px color-mix(in srgb, var(--chip) 48%, transparent), var(--shine);
+    }
+
+    /* Variety: terracotta, honey, sage, berry and coffee chips rotate across the grid */
+    .action-card:nth-child(5n + 2) .action-icon { --chip: var(--color-honey); }
+    .action-card:nth-child(5n + 3) .action-icon { --chip: var(--color-sage); }
+    .action-card:nth-child(5n + 4) .action-icon { --chip: var(--color-berry); }
+    .action-card:nth-child(5n) .action-icon { --chip: var(--color-coffee); }
     .action-label {
       font-size: 1rem;
       font-weight: 600;
@@ -331,7 +346,7 @@ import {
       margin-top: var(--space-8);
       padding: var(--space-6);
       border-radius: var(--radius-lg);
-      background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-surface) 100%);
+      background: var(--color-subtle);
       border: 1px solid var(--color-border);
     }
 
@@ -382,13 +397,13 @@ import {
 
     .action-card-whats-new {
       cursor: pointer;
-      border: 1px dashed var(--color-primary);
-      background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-primary-light) 100%);
+      border: 1px dashed var(--color-coffee);
+      background: var(--color-coffee-soft);
     }
 
     .action-icon-whats-new {
-      background: var(--color-primary);
-      color: var(--color-surface);
+      --chip: var(--color-accent) !important;
+      color: #fff !important;
     }
   `]
 })

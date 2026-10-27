@@ -2,6 +2,7 @@
 
 # Display symbols for common ISO 4217 codes (legacy `Tenant.currency` column + JSON fields).
 _DISPLAY_SYMBOL_BY_ISO: dict[str, str] = {
+    "BOB": "Bs",
     "EUR": "€",
     "USD": "$",
     "GBP": "£",
@@ -36,10 +37,10 @@ def normalize_tenant_currency_fields(
     currency_code: str | None,
     currency: str | None,
 ) -> tuple[str, str]:
-    """Return (iso_code, display_symbol). Missing code defaults to EUR/€."""
+    """Return (iso_code, display_symbol). Missing code defaults to BOB/Bs (Bolivia)."""
     code = (currency_code or "").strip().upper()
     if not code:
-        return ("EUR", "€")
+        return ("BOB", "Bs")
     sym = _DISPLAY_SYMBOL_BY_ISO.get(code)
     if sym is not None:
         return (code, sym)

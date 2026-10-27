@@ -76,8 +76,8 @@ export class MenuComponent implements OnInit, OnDestroy {
   tenantWhatsapp = signal<string | null>(null);
   tenantAddress = signal<string | null>(null);
   tenantWebsite = signal<string | null>(null);
-  tenantCurrency = signal<string>('€');
-  tenantCurrencyCode = signal<string>('EUR');
+  tenantCurrency = signal<string>('Bs');
+  tenantCurrencyCode = signal<string>('BOB');
   immediatePaymentRequired = signal(false);
   tenantPublicBackgroundColor = signal<string | null>(null);
   tenantPublicPrimaryColor = signal<string | null>(null);
@@ -304,9 +304,9 @@ export class MenuComponent implements OnInit, OnDestroy {
         this.tenantWhatsapp.set(data.tenant_whatsapp || null);
         this.tenantAddress.set(data.tenant_address || null);
         this.tenantWebsite.set(data.tenant_website || null);
-        const code = (data.tenant_currency_code || 'EUR').toUpperCase();
+        const code = (data.tenant_currency_code || 'BOB').toUpperCase();
         this.tenantCurrencyCode.set(code);
-        this.tenantCurrency.set(data.tenant_currency || '€');
+        this.tenantCurrency.set(data.tenant_currency || 'Bs');
         this.immediatePaymentRequired.set(data.tenant_immediate_payment_required || false);
         this.tenantPublicBackgroundColor.set(data.tenant_public_background_color ?? null);
         this.tenantPublicPrimaryColor.set(data.tenant_public_primary_color ?? null);
@@ -603,6 +603,19 @@ export class MenuComponent implements OnInit, OnDestroy {
   // ============================================
   // CATEGORY ICONS (for sticky nav)
   // ============================================
+  /** Spanish label for known API category names; other names are shown as the owner typed them. */
+  getCategoryLabel(category: string): string {
+    const keyMap: Record<string, string> = {
+      Starters: 'PRODUCTS.CATEGORY_STARTERS',
+      'Main Course': 'PRODUCTS.CATEGORY_MAIN_COURSE',
+      Desserts: 'PRODUCTS.CATEGORY_DESSERTS',
+      Beverages: 'PRODUCTS.CATEGORY_BEVERAGES',
+      Sides: 'PRODUCTS.CATEGORY_SIDES',
+    };
+    const key = keyMap[category];
+    return key ? this.translate.instant(key) : category;
+  }
+
   getCategoryIcon(category: string): string {
     const icons: Record<string, string> = {
       'Starters': '🥗',
@@ -1125,7 +1138,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   formatPrice(priceCents: number): string {
-    const currencyCode = this.tenantCurrencyCode() || 'EUR';
+    const currencyCode = this.tenantCurrencyCode() || 'BOB';
     const locale = navigator.language || 'en-US';
     return new Intl.NumberFormat(locale, {
       style: 'currency',

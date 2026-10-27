@@ -94,6 +94,15 @@ const STARTER_DEFAULTS: StarterProductState[] = [
             </div>
 
             <div class="form-group">
+              <label for="logo">Logo (opcional)</label>
+              <input id="logo" type="file" accept="image/*" (change)="onLogoSelected($event)">
+              @if (logoPreview(); as preview) {
+                <img [src]="preview" alt="Vista previa del logo" style="max-height: 64px; margin-top: 8px; object-fit: contain;">
+              }
+              <small class="field-hint">Puedes cambiar el nombre y el logo más tarde en Configuración.</small>
+            </div>
+
+            <div class="form-group">
               <label for="address">{{ 'AUTH.SIGNUP_ADDRESS' | translate }}</label>
               <input
                 id="address"
@@ -465,7 +474,7 @@ const STARTER_DEFAULTS: StarterProductState[] = [
     .btn-submit {
       padding: var(--space-3) var(--space-5);
       background: var(--color-primary);
-      color: white;
+      color: var(--color-on-primary);
       border: none;
       border-radius: var(--radius-md);
       font-size: 1rem;
@@ -744,6 +753,24 @@ export class RegisterComponent implements OnInit {
     void this.router.navigate(['/dashboard']);
   }
 
+  /** Optional business logo chosen in step 1; it can be changed later in Settings. */
+  logoFile: File | null = null;
+  logoPreview = signal<string | null>(null);
+
+  onLogoSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0] ?? null;
+    this.logoFile = file && file.type.startsWith('image/') ? file : null;
+    const prev = this.logoPreview();
+    if (prev) URL.revokeObjectURL(prev);
+    this.logoPreview.set(this.logoFile ? URL.createObjectURL(this.logoFile) : null);
+  }
+
+  private uploadOptionalLogo(): void {
+    if (!this.logoFile) return;
+    // Best effort: a failed logo upload must not block account creation.
+    this.api.uploadTenantLogo(this.logoFile).subscribe({ error: () => undefined });
+  }
+
   submitAccount(): void {
     if (!this.accountForm.valid) return;
     this.error.set('');
@@ -758,6 +785,7 @@ export class RegisterComponent implements OnInit {
         this.tenantId.set(res.tenant_id ?? null);
         this.api.login(email, password).subscribe({
           next: () => {
+            this.uploadOptionalLogo();
             this.loading.set(false);
             this.step.set(2);
           },

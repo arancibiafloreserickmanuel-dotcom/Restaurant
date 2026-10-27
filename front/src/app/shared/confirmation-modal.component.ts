@@ -147,7 +147,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
     .btn-primary {
       background: var(--color-primary);
-      color: white;
+      color: var(--color-on-primary);
     }
 
     .btn-primary:hover {

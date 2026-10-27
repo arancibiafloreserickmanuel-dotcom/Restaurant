@@ -478,7 +478,7 @@ import { ApiErrorMessageService } from '../services/api-error-message.service';
     .filter-input, .filter-select { padding: 0.35rem 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
     .reservation-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
     .reservation-card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; background: #fff; }
-    .reservation-card.status-booked { border-left: 4px solid #3b82f6; }
+    .reservation-card.status-booked { border-left: 4px solid var(--st-preparing); }
     .reservation-card.status-seated { border-left: 4px solid #16a34a; }
     .reservation-card.status-finished { border-left: 4px solid #6b7280; }
     .reservation-card.status-cancelled { border-left: 4px solid #dc2626; opacity: 0.85; }

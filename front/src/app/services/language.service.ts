@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 export const SUPPORTED_LANGUAGES = [
   { code: 'en', label: 'English', locale: 'en-US' },
-  { code: 'es', label: 'Español', locale: 'es-ES' },
+  { code: 'es', label: 'Español', locale: 'es-BO' },
   { code: 'ar', label: 'العربية', locale: 'ar-EG' },
   { code: 'fr', label: 'Français', locale: 'fr-FR' },
   { code: 'ca', label: 'Català', locale: 'ca-ES' },
@@ -17,7 +17,7 @@ export const SUPPORTED_LANGUAGES = [
 export type LanguageCode = typeof SUPPORTED_LANGUAGES[number]['code'];
 
 const LANG_STORAGE_KEY = 'pos_language';
-const DEFAULT_LANGUAGE: LanguageCode = 'en';
+const DEFAULT_LANGUAGE: LanguageCode = 'es';
 
 // Languages written right-to-left. Extend this list when new RTL languages are added.
 const RTL_LANGUAGES: readonly LanguageCode[] = ['ur', 'ar'];
@@ -29,7 +29,7 @@ export class LanguageService {
   private translate = inject(TranslateService);
 
   currentLanguage = signal<LanguageCode>(DEFAULT_LANGUAGE);
-  currentLocale = signal<string>('en-US');
+  currentLocale = signal<string>('es-BO');
 
   constructor() {
     this.initializeLanguage();
@@ -41,10 +41,9 @@ export class LanguageService {
     this.translate.addLangs(langCodes);
     this.translate.setDefaultLang(DEFAULT_LANGUAGE);
 
-    // Priority: stored user preference > browser language > default
+    // Deli's operates in Bolivia: Spanish unless the user explicitly picked another language.
     const stored = this.getStoredLanguage();
-    const browserLang = this.getBrowserLanguage();
-    const initialLang = stored || browserLang || DEFAULT_LANGUAGE;
+    const initialLang = stored || DEFAULT_LANGUAGE;
 
     // Apply language WITHOUT storing (only store on explicit user change)
     this.applyLanguage(initialLang);

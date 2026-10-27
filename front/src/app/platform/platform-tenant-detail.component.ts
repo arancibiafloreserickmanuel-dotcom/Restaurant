@@ -216,7 +216,7 @@ import { ApiService, PlatformTenantDetail } from '../services/api.service';
       padding: var(--space-2) var(--space-4);
       border-radius: var(--radius-md);
       background: var(--color-primary);
-      color: #fff;
+      color: var(--color-on-primary);
       text-decoration: none;
       font-size: 0.875rem;
     }

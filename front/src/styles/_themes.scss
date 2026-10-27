@@ -1,0 +1,183 @@
+// Design system themes.
+//
+//   crema (default) — light cream + white surfaces, terracotta/brown details (reference image).
+//   oryzo           — warm dark editorial (styles.md): plomo base, cafe accent, crema text.
+//   claro           — white.
+//   negro           — pure black.
+//
+// The theme is selected with <html data-theme="..."> (see shared/theme.service.ts).
+// The crema tokens are the :root defaults in styles.scss; the others override them here.
+
+:root {
+  --color-ember: #d9560b;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --radius-pill: 999px;
+  --radius-input: 12px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  color-scheme: light;
+}
+
+:root[data-theme='oryzo'] {
+  color-scheme: dark;
+  --color-bg: #151311;
+  --color-subtle: #1e1b18;
+  --color-surface: #262320;
+  --color-surface-raised: #34302b;
+  --color-accent: #dc5000;
+  --color-coffee: #b07a52;
+  --color-coffee-soft: rgba(176, 122, 82, 0.18);
+  --color-cream: #f3e6cd;
+  --color-primary: #f3e6cd;
+  --color-on-primary: #1c1815;
+  --color-text: #f6ede0;
+  --color-text-muted: #a49c90;
+  --color-border: #3b3732;
+  --color-success: #5cc98a;
+  --color-success-light: rgba(92, 201, 138, 0.14);
+  --color-warning: #f2b441;
+  --color-error: #ff6b5b;
+  --series-1: #f3e6cd;
+  --series-2: #b07a52;
+  --series-3: #6f6a63;
+  --series-4: #dc5000;
+  --on-series-1: #1c1815;
+  --on-series-2: #ffffff;
+  --on-series-3: #ffffff;
+  --on-series-4: #ffffff;
+  // Flat system: depth comes from surface steps, not shadows.
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 12px;
+  --radius-input: 0px;
+}
+
+:root[data-theme='claro'] {
+  --color-bg: #ffffff;
+  --color-subtle: #f4f4f2;
+  --color-surface: #ffffff;
+  --color-surface-raised: #f4f4f2;
+  --color-primary: #111111;
+  --color-on-primary: #ffffff;
+  --color-text: #111111;
+  --color-text-muted: #6b6b66;
+  --color-border: #e2e2de;
+  --color-accent: #d9560b;
+  --color-coffee: #8a5a3b;
+  --color-coffee-soft: rgba(138, 90, 59, 0.12);
+  --color-cream: #f3e6cd;
+  --color-success: #15803d;
+  --color-success-light: rgba(21, 128, 61, 0.1);
+  --color-warning: #b45309;
+  --color-error: #b91c1c;
+  --series-1: #111111;
+  --series-2: #8a5a3b;
+  --series-3: #8f8a82;
+  --series-4: #d9560b;
+  --on-series-1: #ffffff;
+  --on-series-2: #ffffff;
+  --on-series-3: #ffffff;
+  --on-series-4: #ffffff;
+}
+
+:root[data-theme='negro'] {
+  color-scheme: dark;
+  --color-bg: #000000;
+  --color-subtle: #0d0d0d;
+  --color-surface: #0d0d0d;
+  --color-surface-raised: #1a1a1a;
+  --color-primary: #ffffff;
+  --color-on-primary: #000000;
+  --color-text: #ffffff;
+  --color-text-muted: #9a9a9a;
+  --color-border: #2a2a2a;
+  --color-accent: #dc5000;
+  --color-coffee: #c08457;
+  --color-coffee-soft: rgba(192, 132, 87, 0.18);
+  --color-cream: #f3e6cd;
+  --color-success: #4ade80;
+  --color-success-light: rgba(74, 222, 128, 0.12);
+  --color-warning: #fbbf24;
+  --color-error: #f87171;
+  --series-1: #ffffff;
+  --series-2: #c08457;
+  --series-3: #6b6b6b;
+  --series-4: #dc5000;
+  --on-series-1: #000000;
+  --on-series-2: #000000;
+  --on-series-3: #ffffff;
+  --on-series-4: #ffffff;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+}
+
+// ---- Shared rules ----
+
+body {
+  font-feature-settings: 'ss01' on;
+  transition: background-color var(--duration-base) var(--ease-out), color var(--duration-base) var(--ease-out);
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+// Oryzo only: museum-label voice (uppercase, weight 500) from styles.md.
+:root[data-theme='oryzo'] {
+  h1, h2, h3, h4,
+  button,
+  label,
+  th,
+  .btn,
+  nav a {
+    text-transform: uppercase;
+    font-weight: var(--font-weight-medium);
+  }
+
+  h1, h2 {
+    line-height: 0.95;
+  }
+}
+
+hr {
+  border: 0;
+  border-top: 1px dashed var(--color-border);
+}
+
+input:not([type='checkbox']):not([type='radio']),
+textarea,
+select {
+  border-radius: var(--radius-input);
+}
+
+// Buttons: pill shape.
+button:not(.icon-btn):not([class*='icon']) {
+  border-radius: var(--radius-pill);
+}
+
+// Native dropdown lists follow the theme and are never clipped by their container.
+select {
+  color: var(--color-text);
+  background-color: var(--color-surface);
+}
+
+select option {
+  color: var(--color-text);
+  background-color: var(--color-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -49,7 +49,7 @@ export class InventoryService {
     private translate = inject(TranslateService);
     private apiUrl = `${environment.apiUrl}/inventory`;
     private currencyCode = signal<string | null>(null);
-    private currencyFallback = signal('€');
+    private currencyFallback = signal('Bs');
     private intlRevision = signal(0);
 
     constructor() {
@@ -65,11 +65,11 @@ export class InventoryService {
                 if (code) {
                     this.currencyFallback.set(currencySymbolFromIsoCode(this.translate, code));
                 } else {
-                    this.currencyFallback.set(settings.currency || '€');
+                    this.currencyFallback.set(settings.currency || 'Bs');
                 }
             },
             error: () => {
-                this.currencyFallback.set('€');
+                this.currencyFallback.set('Bs');
             },
         });
     }

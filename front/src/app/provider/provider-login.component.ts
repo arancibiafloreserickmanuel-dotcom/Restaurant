@@ -66,7 +66,6 @@ import { LegalLinksComponent } from '../shared/legal-links.component';
           <span class="auth-foot-sep" aria-hidden="true">·</span>
           <a routerLink="/login">{{ 'PROVIDER_AUTH.BACK_STAFF_LOGIN' | translate }}</a>
           <span class="auth-foot-sep" aria-hidden="true">·</span>
-          <a href="mailto:hello@satisfecho.de">{{ 'LANDING.CONTACT_US' | translate }}</a>
           @if (legalTermsUrl() || legalPrivacyUrl()) {
             <span class="auth-foot-sep" aria-hidden="true">·</span>
             <app-legal-links [inline]="true" [termsUrl]="legalTermsUrl()" [privacyUrl]="legalPrivacyUrl()" />
@@ -127,7 +126,7 @@ import { LegalLinksComponent } from '../shared/legal-links.component';
       width: 100%;
       padding: var(--space-4);
       background: var(--color-primary);
-      color: white;
+      color: var(--color-on-primary);
       border: none;
       border-radius: var(--radius-md);
       font-size: 1rem;

@@ -394,15 +394,17 @@ const VIEW_CATEGORY: Record<string, string> = {
     .order-card {
       background: var(--color-surface);
       border: 2px solid var(--color-border);
-      border-left: 6px solid var(--color-warning);
+      border-left: 6px solid var(--st-pending);
       border-radius: var(--radius-lg);
       overflow: visible;
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--elev-1), var(--shine-soft);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .order-card.status-preparing { border-left-color: #3B82F6; }
-    .order-card.status-ready { border-left-color: var(--color-success); }
+    .order-card:hover { transform: translateY(-2px); box-shadow: var(--elev-2), var(--shine-soft); }
+    .order-card.status-preparing { border-left-color: var(--st-preparing); }
+    .order-card.status-ready { border-left-color: var(--st-ready); }
     .order-card-urgent {
-      box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.45), var(--shadow-sm);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-error) 55%, transparent), 0 8px 24px color-mix(in srgb, var(--color-error) 28%, transparent);
     }
     .urgent-badge {
       font-size: 0.75rem;
@@ -411,8 +413,8 @@ const VIEW_CATEGORY: Record<string, string> = {
       letter-spacing: 0.04em;
       padding: 2px 8px;
       border-radius: var(--radius-sm);
-      background: rgba(220, 38, 38, 0.15);
-      color: #b91c1c;
+      background: color-mix(in srgb, var(--color-error) 16%, transparent);
+      color: var(--color-error);
     }
     .order-timer-bar-wrap {
       padding: 0 var(--space-5) var(--space-3);
@@ -420,7 +422,8 @@ const VIEW_CATEGORY: Record<string, string> = {
     .order-timer-bar-track {
       height: 8px;
       border-radius: 4px;
-      background: rgba(0, 0, 0, 0.08);
+      background: color-mix(in srgb, var(--color-text) 10%, transparent);
+      box-shadow: inset 0 1px 2px rgba(var(--shadow-color), 0.12);
       overflow: hidden;
     }
     .order-timer-bar-fill {
@@ -429,21 +432,22 @@ const VIEW_CATEGORY: Record<string, string> = {
       transition: width 0.35s ease-out, background 0.25s;
       min-width: 0;
     }
-    .timer-fill-green { background: linear-gradient(90deg, #16a34a, #22c55e); }
-    .timer-fill-yellow { background: linear-gradient(90deg, #ca8a04, #eab308); }
-    .timer-fill-orange { background: linear-gradient(90deg, #ea580c, #f97316); }
-    .timer-fill-red { background: linear-gradient(90deg, #b91c1c, #ef4444); }
-    .order-card.timer-green { border-left-color: #22c55e; }
-    .order-card.timer-yellow { border-left-color: #eab308; }
-    .order-card.timer-orange { border-left-color: #f97316; }
-    .order-card.timer-red { border-left-color: #ef4444; }
+    .timer-fill-green { background: linear-gradient(90deg, var(--color-sage), color-mix(in srgb, var(--color-sage) 70%, white)); box-shadow: 0 0 10px color-mix(in srgb, var(--color-sage) 55%, transparent); }
+    .timer-fill-yellow { background: linear-gradient(90deg, var(--color-honey), color-mix(in srgb, var(--color-honey) 70%, white)); box-shadow: 0 0 10px color-mix(in srgb, var(--color-honey) 55%, transparent); }
+    .timer-fill-orange { background: linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 70%, white)); box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 55%, transparent); }
+    .timer-fill-red { background: linear-gradient(90deg, var(--color-berry), color-mix(in srgb, var(--color-berry) 70%, white)); box-shadow: 0 0 10px color-mix(in srgb, var(--color-berry) 60%, transparent); }
+    .order-card.timer-green { border-left-color: var(--color-sage); }
+    .order-card.timer-yellow { border-left-color: var(--color-honey); }
+    .order-card.timer-orange { border-left-color: var(--color-accent); }
+    .order-card.timer-red { border-left-color: var(--color-berry); }
     .order-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       padding: var(--space-4) var(--space-5);
       border-bottom: 2px solid var(--color-border);
-      background: var(--color-bg);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--color-honey) 10%, var(--color-bg)), var(--color-bg));
+      border-radius: calc(var(--radius-lg) - 2px) calc(var(--radius-lg) - 2px) 0 0;
     }
     .order-meta {
       display: flex;
@@ -451,8 +455,9 @@ const VIEW_CATEGORY: Record<string, string> = {
       gap: var(--space-1);
     }
     .order-id {
-      font-size: 1.5rem;
-      font-weight: 700;
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1;
       color: var(--color-text);
     }
     .order-table {
@@ -468,9 +473,24 @@ const VIEW_CATEGORY: Record<string, string> = {
       border-radius: 20px;
       font-size: 0.9375rem;
       font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 25%, transparent);
     }
+    .status-badge::before {
+      content: '';
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 8px currentColor;
+    }
+    .status-badge.status-pending { background: color-mix(in srgb, var(--st-pending) 20%, transparent); color: var(--st-pending); }
+    .status-badge.status-preparing { background: color-mix(in srgb, var(--st-preparing) 20%, transparent); color: var(--st-preparing); }
+    .status-badge.status-ready, .status-badge.status-partially_delivered { background: color-mix(in srgb, var(--st-ready) 20%, transparent); color: var(--st-ready); }
     .status-badge.pending { background: rgba(245, 158, 11, 0.2); color: var(--color-warning); }
-    .status-badge.preparing { background: rgba(59, 130, 246, 0.2); color: #3B82F6; }
+    .status-badge.preparing { background: color-mix(in srgb, var(--st-preparing) 20%, transparent); color: var(--st-preparing); }
     .status-badge.ready { background: var(--color-success-light); color: var(--color-success); }
     .status-badge.partially_delivered { background: var(--color-success-light); color: var(--color-success); }
     .order-items {
@@ -520,7 +540,7 @@ const VIEW_CATEGORY: Record<string, string> = {
       border-radius: 10px;
     }
     .item-status.status-pending { background: rgba(245, 158, 11, 0.15); color: var(--color-warning); }
-    .item-status.status-preparing { background: rgba(59, 130, 246, 0.15); color: #3B82F6; }
+    .item-status.status-preparing { background: color-mix(in srgb, var(--st-preparing) 15%, transparent); color: var(--st-preparing); }
     .item-status.status-ready { background: var(--color-success-light); color: var(--color-success); }
     .item-status.status-delivered { background: var(--color-bg); color: var(--color-text-muted); }
     .item-status-control {
@@ -550,7 +570,7 @@ const VIEW_CATEGORY: Record<string, string> = {
       transform: scale(1.05);
     }
     .item-status-badge.status-pending.clickable { background: rgba(245, 158, 11, 0.15); color: var(--color-warning); }
-    .item-status-badge.status-preparing.clickable { background: rgba(59, 130, 246, 0.15); color: #3B82F6; }
+    .item-status-badge.status-preparing.clickable { background: color-mix(in srgb, var(--st-preparing) 15%, transparent); color: var(--st-preparing); }
     .item-status-badge.status-ready.clickable { background: var(--color-success-light); color: var(--color-success); }
     .status-dropdown {
       position: absolute;
@@ -674,7 +694,7 @@ const VIEW_CATEGORY: Record<string, string> = {
     }
     .modal-actions .btn-primary {
       background: var(--color-primary);
-      color: white;
+      color: var(--color-on-primary);
       border: none;
     }
     .modal-actions .btn-secondary {

@@ -2055,6 +2055,8 @@ export class ApiService {
   tenantUiModules = signal<Record<TenantUiModuleKey, boolean>>({ ...DEFAULT_TENANT_UI_MODULES });
   /** Tenant `name` from settings (staff sidebar branding); cleared on logout. */
   tenantDisplayName = signal<string | null>(null);
+  /** Tenant logo URL for staff branding (sidebar); null when no logo is set. */
+  tenantLogoUrl = signal<string | null>(null);
 
   private orderUpdates = new Subject<any>();
   private reservationUpdates = new Subject<any>();
@@ -2261,6 +2263,7 @@ export class ApiService {
     this.tenantUiModulesResolved.set(false);
     this.tenantUiModules.set({ ...DEFAULT_TENANT_UI_MODULES });
     this.tenantDisplayName.set(null);
+    this.tenantLogoUrl.set(null);
     this.disconnectWebSocket();
     return this.http.post(`${this.apiUrl}/logout`, {}).pipe(
       catchError(() => of(undefined))
@@ -3559,8 +3562,15 @@ export class ApiService {
         this.applyTenantUiModulesFromSettings(s);
         const n = typeof s?.name === 'string' ? s.name.trim() : '';
         this.tenantDisplayName.set(n || null);
+        this.syncTenantLogoUrl(s);
       })
     );
+  }
+
+  private syncTenantLogoUrl(s: Pick<TenantSettings, 'logo_filename'> | null | undefined): void {
+    const url = this.getTenantLogoUrl(s?.logo_filename, this.userSubject.value?.tenant_id);
+    // Cache-bust so a replaced logo shows immediately.
+    this.tenantLogoUrl.set(url ? `${url}?v=${Date.now()}` : null);
   }
 
   updateTenantSettings(settings: Partial<TenantSettings>): Observable<TenantSettings> {
@@ -3754,11 +3764,15 @@ export class ApiService {
   uploadTenantLogo(file: File): Observable<TenantSettings> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<TenantSettings>(`${this.apiUrl}/tenant/logo`, formData);
+    return this.http
+      .post<TenantSettings>(`${this.apiUrl}/tenant/logo`, formData)
+      .pipe(tap((s) => this.syncTenantLogoUrl(s)));
   }
 
   deleteTenantLogo(): Observable<TenantSettings> {
-    return this.http.delete<TenantSettings>(`${this.apiUrl}/tenant/logo`);
+    return this.http
+      .delete<TenantSettings>(`${this.apiUrl}/tenant/logo`)
+      .pipe(tap((s) => this.syncTenantLogoUrl(s)));
   }
 
   getTenantLogoUrl(logoFilename: string | null | undefined, tenantId: number | null | undefined): string | null {

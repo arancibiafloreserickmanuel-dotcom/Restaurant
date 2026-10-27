@@ -1,0 +1,160 @@
+// Depth, shine and glow. All values come from tokens so every theme keeps its own feel
+// (soft brown shadows on Crema, black shadows with a faint rim light on dark themes).
+// Motion is short and is switched off by prefers-reduced-motion (see _themes.scss).
+
+:root {
+  // Extra palette for details (status chips, icon chips, series). Warm family, never the base.
+  --color-honey: #e0a526;
+  --color-sage: #6f9a63;
+  --color-berry: #b3423a;
+  --color-sand: #d6b08a;
+  --color-sky: #4d86a8;
+
+  /* Order / item status colours, shared by cash desk, kitchen, dispatch and reports */
+  --st-pending: var(--color-honey);
+  --st-preparing: var(--color-sky);
+  --st-ready: var(--color-sage);
+  --st-delivered: var(--color-sand);
+  --st-cancelled: var(--color-berry);
+
+  --shadow-color: 91, 50, 24;
+  --elev-1: 0 1px 2px rgba(var(--shadow-color), 0.06), 0 4px 14px rgba(var(--shadow-color), 0.07);
+  --elev-2: 0 2px 4px rgba(var(--shadow-color), 0.08), 0 12px 28px rgba(var(--shadow-color), 0.13);
+  --shine: inset 0 1px 0 rgba(255, 255, 255, 0.32), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  --shine-soft: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --glow-primary: 0 6px 16px color-mix(in srgb, var(--color-primary) 38%, transparent), 0 1px 3px rgba(var(--shadow-color), 0.2);
+  --gloss: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 52%, rgba(0, 0, 0, 0.1) 100%);
+  --ambient:
+    radial-gradient(900px 520px at 88% -8%, rgba(217, 86, 11, 0.1), transparent 62%),
+    radial-gradient(760px 520px at -8% 108%, rgba(176, 122, 82, 0.14), transparent 62%);
+}
+
+:root[data-theme='oryzo'],
+:root[data-theme='negro'] {
+  --color-honey: #f0b83a;
+  --color-sage: #8dbb7f;
+  --color-berry: #e0675c;
+  --color-sand: #c9a27a;
+  --color-sky: #78aecb;
+  --shadow-color: 0, 0, 0;
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.3);
+  --elev-2: 0 2px 4px rgba(0, 0, 0, 0.45), 0 14px 30px rgba(0, 0, 0, 0.45);
+  --shine: inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+  --shine-soft: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 14px 30px rgba(0, 0, 0, 0.5);
+  --ambient: radial-gradient(900px 520px at 88% -8%, rgba(176, 122, 82, 0.1), transparent 62%);
+}
+
+:root[data-theme='negro'] {
+  --ambient: none;
+}
+
+:root[data-theme='claro'] {
+  --shadow-color: 17, 17, 17;
+  --ambient: none;
+}
+
+body {
+  background-image: var(--ambient);
+  background-attachment: fixed;
+}
+
+// ---- Buttons ----
+.btn,
+button.btn {
+  box-shadow: var(--elev-1);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.15s ease, filter 0.15s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+    box-shadow: var(--shadow-sm);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 28%, transparent);
+  }
+}
+
+.btn-primary,
+.btn-danger,
+.btn-success {
+  background-image: var(--gloss);
+  box-shadow: var(--glow-primary), var(--shine);
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.06);
+    box-shadow: 0 10px 22px color-mix(in srgb, var(--color-primary) 44%, transparent), var(--shine);
+  }
+}
+
+.btn-danger {
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--color-error) 35%, transparent), var(--shine);
+}
+
+.btn-success {
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--color-success) 35%, transparent), var(--shine);
+}
+
+.btn-secondary {
+  box-shadow: var(--elev-1), var(--shine-soft);
+
+  &:hover:not(:disabled) {
+    box-shadow: var(--elev-2), var(--shine-soft);
+  }
+}
+
+.btn-ghost {
+  box-shadow: none;
+
+  &:hover:not(:disabled) {
+    box-shadow: var(--elev-1);
+  }
+}
+
+.icon-btn:hover {
+  box-shadow: var(--elev-1);
+}
+
+// ---- Surfaces ----
+.card,
+.form-card,
+.table-card,
+.order-card {
+  box-shadow: var(--elev-1), var(--shine-soft);
+}
+
+.modal {
+  box-shadow: var(--elev-2), 0 40px 80px rgba(var(--shadow-color), 0.18);
+}
+
+.modal-overlay {
+  backdrop-filter: blur(6px);
+}
+
+// ---- Fields ----
+input:not([type='checkbox']):not([type='radio']):not([type='file']),
+textarea,
+select {
+  box-shadow: inset 0 1px 2px rgba(var(--shadow-color), 0.07);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow:
+      inset 0 1px 2px rgba(var(--shadow-color), 0.05),
+      0 0 0 4px color-mix(in srgb, var(--color-primary) 20%, transparent);
+  }
+}
+
+// ---- Status badges: soft tint + hairline ----
+.status-badge-btn {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 22%, transparent);
+}

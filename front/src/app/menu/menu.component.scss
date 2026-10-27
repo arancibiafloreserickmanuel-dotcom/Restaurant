@@ -407,11 +407,11 @@ $cart-expanded-max: 60vh;
   &.active {
     background: var(--color-primary);
     border-color: var(--color-primary);
-    color: white;
+    color: var(--color-on-primary);
     box-shadow: 0 2px 8px rgba(211, 82, 51, 0.3);
 
     .category-label {
-      color: white;
+      color: var(--color-on-primary);
     }
   }
 
@@ -640,9 +640,9 @@ $cart-expanded-max: 60vh;
   flex-shrink: 0;
 
   &.status-pending { background: var(--color-warning); }
-  &.status-preparing { background: #3B82F6; }
+  &.status-preparing { background: var(--st-preparing); }
   &.status-ready { background: var(--color-success); }
-  &.status-partially_delivered { background: #3B82F6; }
+  &.status-partially_delivered { background: var(--st-preparing); }
   &.status-paid,
   &.status-completed { background: var(--color-success); }
   &.status-cancelled { background: var(--color-text-muted); }
@@ -696,7 +696,7 @@ $cart-expanded-max: 60vh;
   }
 
   &.status-preparing {
-    background: #3B82F6;
+    background: var(--st-preparing);
   }
 
   &.status-ready {
@@ -704,7 +704,7 @@ $cart-expanded-max: 60vh;
   }
 
   &.status-partially_delivered {
-    background: #3B82F6;
+    background: var(--st-preparing);
   }
 
   &.status-paid {
@@ -816,7 +816,7 @@ $cart-expanded-max: 60vh;
     }
 
     &.status-preparing {
-      background: #3B82F6;
+      background: var(--st-preparing);
     }
 
     &.status-ready {
@@ -892,8 +892,8 @@ $cart-expanded-max: 60vh;
     }
 
     &.status-preparing {
-      background: rgba(59, 130, 246, 0.15);
-      color: #3B82F6;
+      background: color-mix(in srgb, var(--st-preparing) 15%, transparent);
+      color: var(--st-preparing);
     }
 
     &.status-ready {
@@ -959,7 +959,7 @@ $cart-expanded-max: 60vh;
   flex: 2;
   padding: var(--space-3);
   background: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
   border: none;
   border-radius: var(--radius-md);
   font-weight: 600;
@@ -1146,7 +1146,7 @@ $cart-expanded-max: 60vh;
   border-radius: 50%;
   border: none;
   background: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1301,7 +1301,7 @@ $cart-expanded-max: 60vh;
   }
 
   &.wine-type-sparkling {
-    background: rgba(59, 130, 246, 0.9);
+    background: color-mix(in srgb, var(--st-preparing) 90%, transparent);
     color: white;
   }
 
@@ -1476,7 +1476,7 @@ $cart-expanded-max: 60vh;
   border-radius: 50%;
   border: none;
   background: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1576,7 +1576,7 @@ $cart-expanded-max: 60vh;
   height: 18px;
   padding: 0 4px;
   background: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
   border-radius: 9px;
   font-size: 0.6875rem;
   font-weight: 700;
@@ -1611,7 +1611,7 @@ $cart-expanded-max: 60vh;
   border-radius: 999px;
   padding: 0.55rem 1rem;
   background: var(--color-primary);
-  color: #fff;
+  color: var(--color-on-primary);
   font: inherit;
   font-size: 0.875rem;
   font-weight: 600;
@@ -1879,7 +1879,7 @@ $cart-expanded-max: 60vh;
   width: 100%;
   padding: var(--space-4);
   background: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
   border: none;
   border-radius: var(--radius-md);
   font-size: 1rem;
@@ -2225,7 +2225,7 @@ $cart-expanded-max: 60vh;
   gap: var(--space-2);
   padding: var(--space-4);
   background: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
   border: none;
   border-radius: var(--radius-md);
   font-size: 1rem;

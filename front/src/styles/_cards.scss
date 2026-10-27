@@ -69,7 +69,7 @@
     }
 
     &.status-preparing {
-        border-left-color: #3B82F6;
+        border-left-color: var(--st-preparing);
     }
 
     &.status-ready {

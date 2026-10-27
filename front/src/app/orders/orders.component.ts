@@ -1541,7 +1541,7 @@ ModuleRegistry.registerModules([
       margin-left: 0.35rem;
     }
     .order-channel-badge.marketplace {
-      background: rgba(59, 130, 246, 0.12);
+      background: color-mix(in srgb, var(--st-preparing) 12%, transparent);
       color: #2563eb;
     }
     .delivery-draft-items {
@@ -1578,7 +1578,7 @@ ModuleRegistry.registerModules([
     }
     .tab-badge {
       background: var(--color-primary);
-      color: white;
+      color: var(--color-on-primary);
       padding: 2px 8px;
       border-radius: 12px;
       font-size: 0.75rem;
@@ -1639,7 +1639,7 @@ ModuleRegistry.registerModules([
         z-index: 9998;
       }
       &.status-pending { border-left-color: var(--color-warning); }
-      &.status-preparing { border-left-color: #3B82F6; }
+      &.status-preparing { border-left-color: var(--st-preparing); }
       &.status-ready { border-left-color: var(--color-success); }
       &.status-paid { border-left-color: var(--color-success); }
       &.status-completed { border-left-color: var(--color-text-muted); }
@@ -1701,7 +1701,7 @@ ModuleRegistry.registerModules([
     .status-badge {
       padding: var(--space-1) var(--space-3); border-radius: 20px; font-size: 0.75rem; font-weight: 600;
       &.pending { background: rgba(245, 158, 11, 0.15); color: var(--color-warning); }
-      &.preparing { background: rgba(59, 130, 246, 0.15); color: #3B82F6; }
+      &.preparing { background: color-mix(in srgb, var(--st-preparing) 15%, transparent); color: var(--st-preparing); }
       &.ready { background: var(--color-success-light); color: var(--color-success); }
       &.paid { background: var(--color-success-light); color: var(--color-success); }
       &.completed { background: var(--color-bg); color: var(--color-text-muted); }
@@ -1839,11 +1839,11 @@ ModuleRegistry.registerModules([
       transform: scale(1.05);
     }
     .item-status-badge.status-preparing { 
-      background: rgba(59, 130, 246, 0.15); 
-      color: #3B82F6;
+      background: color-mix(in srgb, var(--st-preparing) 15%, transparent); 
+      color: var(--st-preparing);
     }
     .item-status-badge.status-preparing.clickable:hover {
-      background: #3B82F6;
+      background: var(--st-preparing);
       color: white;
       transform: scale(1.05);
     }
@@ -1876,9 +1876,9 @@ ModuleRegistry.registerModules([
       border: 1px solid var(--color-border);
     }
     .item-status-badge.status-delivered.clickable:hover {
-      background: rgba(59, 130, 246, 0.15);
-      color: #3B82F6;
-      border-color: #3B82F6;
+      background: color-mix(in srgb, var(--st-preparing) 15%, transparent);
+      color: var(--st-preparing);
+      border-color: var(--st-preparing);
       transform: scale(1.05);
     }
     .item-status-badge.status-cancelled { background: var(--color-bg); color: var(--color-text-muted); }
@@ -1892,7 +1892,7 @@ ModuleRegistry.registerModules([
       font-size: 0.75rem;
     }
     .btn-info {
-      background: #3B82F6;
+      background: var(--st-preparing);
       color: white;
     }
     .btn-info:hover {
@@ -2014,7 +2014,7 @@ ModuleRegistry.registerModules([
       transform: rotate(180deg);
     }
     .status-badge-btn.pending { background: rgba(245, 158, 11, 0.15); color: var(--color-warning); }
-    .status-badge-btn.preparing { background: rgba(59, 130, 246, 0.15); color: #3B82F6; }
+    .status-badge-btn.preparing { background: color-mix(in srgb, var(--st-preparing) 15%, transparent); color: var(--st-preparing); }
     .status-badge-btn.ready { background: var(--color-success-light); color: var(--color-success); }
     .status-badge-btn.completed { background: var(--color-bg); color: var(--color-text-muted); }
     .status-badge-btn.paid { background: var(--color-success-light); color: var(--color-success); }
@@ -2543,7 +2543,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   /** When set (via `?table=` query), order lists show only this table's orders. */
   tableScopeId = signal<number | null>(null);
   loading = signal(true);
-  currency = signal<string>('€');
+  currency = signal<string>('Bs');
   currencyCode = signal<string | null>(null);
   showRemovedItems = false;
   viewMode = signal<'active' | 'not_paid' | 'history' | 'delivery'>('active');
@@ -3635,7 +3635,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
         if (code) {
           this.currency.set(currencySymbolFromIsoCode(this.translate, code));
         } else {
-          this.currency.set(settings.currency || '€');
+          this.currency.set(settings.currency || 'Bs');
         }
       },
       error: (err) => {

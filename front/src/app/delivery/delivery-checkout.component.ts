@@ -286,7 +286,7 @@ export class DeliveryCheckoutComponent implements OnInit, OnDestroy {
   }
 
   formatCents(cents: number): string {
-    return formatMoneyCents(this.translate, cents, this.menu()?.currency || 'EUR');
+    return formatMoneyCents(this.translate, cents, this.menu()?.currency || 'BOB');
   }
 
   productImageUrl(url: string): string {

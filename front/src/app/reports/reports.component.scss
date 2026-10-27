@@ -331,7 +331,33 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    position: relative;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--elev-1), var(--shine-soft);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--elev-2), var(--shine-soft);
+    }
+
+    /* Small colour detail on neutral cards */
+    &::after {
+      content: '';
+      position: absolute;
+      top: var(--space-4);
+      right: var(--space-4);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--dot, var(--color-accent));
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--dot, var(--color-accent)) 22%, transparent), 0 0 12px color-mix(in srgb, var(--dot, var(--color-accent)) 60%, transparent);
+    }
+
+    &:nth-child(5n + 2)::after { --dot: var(--color-sage); }
+    &:nth-child(5n + 3)::after { --dot: var(--color-honey); }
+    &:nth-child(5n + 4)::after { --dot: var(--color-berry); }
 
     .card-label {
       font-size: 0.875rem;
@@ -346,23 +372,39 @@
     }
 
     &.revenue {
-      background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
-      color: white;
+      background: var(--series-1);
+      background-image: var(--gloss);
+      color: var(--on-series-1);
+      border-color: transparent;
+      box-shadow: 0 12px 26px color-mix(in srgb, var(--series-1) 38%, transparent), var(--shine);
+      &::after { background: var(--on-series-1); opacity: 0.55; box-shadow: none; }
     }
 
     &.orders {
-      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-      color: white;
+      background: var(--series-2);
+      background-image: var(--gloss);
+      color: var(--on-series-2);
+      border-color: transparent;
+      box-shadow: 0 12px 26px color-mix(in srgb, var(--series-2) 38%, transparent), var(--shine);
+      &::after { background: var(--on-series-2); opacity: 0.55; box-shadow: none; }
     }
 
     &.reservations {
-      background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
-      color: white;
+      background: var(--series-3);
+      background-image: var(--gloss);
+      color: var(--on-series-3);
+      border-color: transparent;
+      box-shadow: 0 12px 26px color-mix(in srgb, var(--series-3) 38%, transparent), var(--shine);
+      &::after { background: var(--on-series-3); opacity: 0.55; box-shadow: none; }
     }
 
     &.overbooking {
-      background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%);
-      color: white;
+      background: var(--series-4);
+      background-image: var(--gloss);
+      color: var(--on-series-4);
+      border-color: transparent;
+      box-shadow: 0 12px 26px color-mix(in srgb, var(--series-4) 38%, transparent), var(--shine);
+      &::after { background: var(--on-series-4); opacity: 0.55; box-shadow: none; }
     }
   }
 
@@ -444,7 +486,7 @@
   }
 
   .revenue-graph-line {
-    stroke: var(--color-primary, #0d9488);
+    stroke: var(--color-coffee);
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -458,7 +500,7 @@
   gap: var(--space-2);
 
   &.daily-chart .bar-fill {
-    background: linear-gradient(90deg, #0d9488 0%, #2dd4bf 100%);
+    background: var(--series-1);
   }
 
   &.compact {
@@ -495,19 +537,19 @@
     transition: width 0.4s ease-out;
 
     &.product {
-      background: linear-gradient(90deg, #059669 0%, #34d399 100%);
+      background: var(--series-2);
     }
 
     &.category {
-      background: linear-gradient(90deg, #7c3aed 0%, #a78bfa 100%);
+      background: var(--series-3);
     }
 
     &.table {
-      background: linear-gradient(90deg, #dc2626 0%, #f87171 100%);
+      background: var(--series-4);
     }
 
     &.waiter {
-      background: linear-gradient(90deg, #ea580c 0%, #fb923c 100%);
+      background: var(--color-coffee);
     }
   }
 
@@ -590,16 +632,16 @@
         min-width: 2px;
 
         &.product {
-          background: linear-gradient(90deg, #059669 0%, #34d399 100%);
+          background: var(--series-2);
         }
         &.category {
-          background: linear-gradient(90deg, #7c3aed 0%, #a78bfa 100%);
+          background: var(--series-3);
         }
         &.table {
-          background: linear-gradient(90deg, #dc2626 0%, #f87171 100%);
+          background: var(--series-4);
         }
         &.waiter {
-          background: linear-gradient(90deg, #ea580c 0%, #fb923c 100%);
+          background: var(--color-coffee);
         }
       }
     }
@@ -666,7 +708,7 @@
 
   &.btn-primary {
     background: var(--color-primary);
-    color: white;
+    color: var(--color-on-primary);
   }
 
   &.btn-secondary {

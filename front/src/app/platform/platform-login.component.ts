@@ -114,7 +114,7 @@ import { ApiErrorMessageService } from '../services/api-error-message.service';
       width: 100%;
       padding: var(--space-4);
       background: var(--color-primary);
-      color: white;
+      color: var(--color-on-primary);
       border: none;
       border-radius: var(--radius-md);
       font-size: 1rem;

@@ -118,7 +118,7 @@
       @for (category of availableCategories(); track category) {
       <button class="category-chip" [class.active]="selectedCategory() === category" (click)="selectCategory(category)">
         <span class="category-icon">{{ getCategoryIcon(category) }}</span>
-        <span class="category-label">{{ category }}</span>
+        <span class="category-label">{{ getCategoryLabel(category) }}</span>
       </button>
       }
     </div>

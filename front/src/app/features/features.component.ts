@@ -20,8 +20,6 @@ import { FEATURE_CATEGORIES } from './feature-landings';
         </a>
         <div class="features-nav__links">
           <a routerLink="/features" class="features-nav__link features-nav__link--active">{{ 'LANDING.NAV_FEATURES' | translate }}</a>
-          <a routerLink="/pricing" class="features-nav__link">{{ 'LANDING.NAV_PRICING' | translate }}</a>
-          <a routerLink="/about" class="features-nav__link">{{ 'LANDING.NAV_ABOUT' | translate }}</a>
           <a routerLink="/" fragment="guests" class="features-nav__link">{{ 'LANDING.NAV_GUESTS' | translate }}</a>
           <a routerLink="/" fragment="demo" class="features-nav__link">{{ 'LANDING.NAV_DEMO' | translate }}</a>
         </div>

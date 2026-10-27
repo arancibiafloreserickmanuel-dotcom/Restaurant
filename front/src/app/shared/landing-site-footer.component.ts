@@ -26,7 +26,6 @@ import { environment } from '../../environments/environment';
             <span class="landing-footer__group-label">{{ 'LANDING.FOOTER_ACCOUNT' | translate }}</span>
             <a routerLink="/register">{{ 'AUTH.CREATE_ACCOUNT' | translate }}</a>
             <a routerLink="/login">{{ 'LANDING.LOGIN' | translate }}</a>
-            <a routerLink="/pricing" data-testid="landing-pricing">{{ 'LANDING.NAV_PRICING' | translate }}</a>
             <a routerLink="/features">{{ 'LANDING.NAV_FEATURES' | translate }}</a>
           </div>
           <div class="landing-footer__group">
@@ -37,9 +36,7 @@ import { environment } from '../../environments/environment';
           </div>
           <div class="landing-footer__group">
             <span class="landing-footer__group-label">{{ 'LANDING.FOOTER_SUPPORT' | translate }}</span>
-            <a routerLink="/about" data-testid="landing-about">{{ 'LANDING.NAV_ABOUT' | translate }}</a>
             <a routerLink="/manual-usuario" data-testid="landing-user-manual">{{ 'LANDING.USER_MANUAL' | translate }}</a>
-            <a href="mailto:hello@satisfecho.de" data-testid="landing-contact-us">{{ 'LANDING.CONTACT_US' | translate }}</a>
             <a routerLink="/terms" data-testid="landing-terms">{{ 'LEGAL.TERMS_OF_SERVICE' | translate }}</a>
             <a routerLink="/privacy" data-testid="landing-privacy">{{ 'LEGAL.PRIVACY_POLICY' | translate }}</a>
           </div>

@@ -102,8 +102,8 @@
     }
 
     &.preparing {
-        background: rgba(59, 130, 246, 0.15);
-        color: #3B82F6;
+        background: color-mix(in srgb, var(--st-preparing) 15%, transparent);
+        color: var(--st-preparing);
     }
 
     &.ready {
@@ -138,8 +138,8 @@
     }
 
     &.status-preparing {
-        background: rgba(59, 130, 246, 0.15);
-        color: #3B82F6;
+        background: color-mix(in srgb, var(--st-preparing) 15%, transparent);
+        color: var(--st-preparing);
     }
 
     &.status-ready {
@@ -181,7 +181,7 @@
     }
 
     &.status-preparing.clickable:hover {
-        background: #3B82F6;
+        background: var(--st-preparing);
         color: white;
     }
 
@@ -191,9 +191,9 @@
     }
 
     &.status-delivered.clickable:hover {
-        background: rgba(59, 130, 246, 0.15);
-        color: #3B82F6;
-        border-color: #3B82F6;
+        background: color-mix(in srgb, var(--st-preparing) 15%, transparent);
+        color: var(--st-preparing);
+        border-color: var(--st-preparing);
     }
 }
 
@@ -204,7 +204,7 @@
     font-size: 0.75rem;
     font-weight: 600;
     background: var(--color-primary);
-    color: white;
+    color: var(--color-on-primary);
 
     &.secondary {
         background: var(--color-text-muted);

@@ -1,8 +1,8 @@
 /**
  * Public guest-page branding tokens (#370).
- * Primary CTA default is blue (go/confirm), not terracotta/stop.
+ * Primary CTA default is the Deli's terracotta.
  */
-export const PUBLIC_PRIMARY_COLOR_DEFAULT = '#2563EB';
+export const PUBLIC_PRIMARY_COLOR_DEFAULT = '#A4501F';
 
 /** Dark ink for light washes (matches global `--color-text`). */
 export const PUBLIC_ON_LIGHT_INK = '#1C1917';

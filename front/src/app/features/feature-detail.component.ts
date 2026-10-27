@@ -24,8 +24,6 @@ import { featureDetailKey, getFeatureLanding, type FeatureLanding } from './feat
           <a routerLink="/features" class="feature-detail-nav__link feature-detail-nav__link--active">{{
             'LANDING.NAV_FEATURES' | translate
           }}</a>
-          <a routerLink="/pricing" class="feature-detail-nav__link">{{ 'LANDING.NAV_PRICING' | translate }}</a>
-          <a routerLink="/about" class="feature-detail-nav__link">{{ 'LANDING.NAV_ABOUT' | translate }}</a>
           <a routerLink="/" fragment="guests" class="feature-detail-nav__link">{{ 'LANDING.NAV_GUESTS' | translate }}</a>
           <a routerLink="/" fragment="demo" class="feature-detail-nav__link">{{ 'LANDING.NAV_DEMO' | translate }}</a>
         </div>
@@ -387,7 +385,7 @@ export class FeatureDetailComponent {
     this.feature$.subscribe((feature) => {
       this.feature = feature;
       if (!feature) {
-        this.seo.applyFeatureDetail('/features', 'Features — Satisfecho', 'Feature not found.');
+        this.seo.applyFeatureDetail('/features', 'Funciones — Restaurant', 'Feature not found.');
         return;
       }
       const slug = feature.slug;

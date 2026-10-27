@@ -8,11 +8,12 @@ import { courierGuard } from './auth/courier.guard';
 import { customerGuard } from './auth/customer.guard';
 import { platformGuard } from './auth/platform.guard';
 import { permissionGuard } from './auth/permission.guard';
+import { devSkipLoginGuard } from './auth/dev-auto-login';
 import { tablesCanvasCanDeactivate } from './tables/tables-canvas-deactivate.guard';
 
 export const routes: Routes = [
   // Public routes
-  { path: '', loadComponent: () => import('./landing/landing.component').then(m => m.LandingComponent) },
+  { path: '', canActivate: [devSkipLoginGuard], loadComponent: () => import('./landing/landing.component').then(m => m.LandingComponent) },
   { path: 'features/:slug', loadComponent: () => import('./features/feature-detail.component').then(m => m.FeatureDetailComponent) },
   { path: 'features', loadComponent: () => import('./features/features.component').then(m => m.FeaturesComponent) },
   { path: 'pricing', loadComponent: () => import('./pricing/pricing-page.component').then(m => m.PricingPageComponent) },
@@ -21,7 +22,7 @@ export const routes: Routes = [
     path: 'manual-usuario',
     loadComponent: () => import('./user-manual/user-manual-page.component').then((m) => m.UserManualPageComponent),
   },
-  { path: 'login', loadComponent: () => import('./auth/login.component').then(m => m.LoginComponent) },
+  { path: 'login', canActivate: [devSkipLoginGuard], loadComponent: () => import('./auth/login.component').then(m => m.LoginComponent) },
   { path: 'register', loadComponent: () => import('./auth/register.component').then(m => m.RegisterComponent) },
   { path: 'signup', loadComponent: () => import('./auth/register.component').then(m => m.RegisterComponent) },
   {

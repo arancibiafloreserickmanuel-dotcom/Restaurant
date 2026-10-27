@@ -924,7 +924,11 @@ function getInitialTablesViewMode(): 'tiles' | 'table' {
       border-radius: var(--radius-lg);
       padding: var(--space-4);
       text-align: center;
+      position: relative;
+      box-shadow: var(--elev-1), var(--shine-soft);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+    .table-card:hover { transform: translateY(-2px); box-shadow: var(--elev-2), var(--shine-soft); }
     .table-tile-inner {
       display: flex;
       flex-direction: column;
@@ -955,7 +959,7 @@ function getInitialTablesViewMode(): 'tiles' | 'table' {
     
     .qr-section { margin-bottom: var(--space-4); }
     .qr-card {
-      background: white; border: 2px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      background: white; border: 2px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); box-shadow: var(--elev-1);
     }
     .qr-header { text-align: center; margin-bottom: var(--space-3); padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-border); }
     .company-name { font-size: 1.125rem; font-weight: 700; color: var(--color-text); margin-bottom: var(--space-2); }
@@ -978,8 +982,9 @@ function getInitialTablesViewMode(): 'tiles' | 'table' {
       gap: var(--space-2);
       width: 100%;
       padding: var(--space-2) var(--space-3);
-      background: white;
+      background: var(--color-surface);
       border: 2px dashed var(--color-primary);
+      box-shadow: inset 0 1px 3px rgba(var(--shadow-color), 0.08);
       border-radius: var(--radius-md);
     }
     .btn-pin-renew {
@@ -1015,7 +1020,8 @@ function getInitialTablesViewMode(): 'tiles' | 'table' {
       font-weight: 600;
       text-transform: uppercase;
       padding: var(--space-1) var(--space-3);
-      border-radius: 12px;
+      border-radius: 999px;
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 22%, transparent);
     }
     .status-dot {
       width: 8px;
@@ -1023,19 +1029,20 @@ function getInitialTablesViewMode(): 'tiles' | 'table' {
       border-radius: 50%;
     }
     .status-active {
-      background: rgba(34, 197, 94, 0.1);
-      color: #22c55e;
+      background: color-mix(in srgb, var(--st-ready) 16%, transparent);
+      color: var(--st-ready);
     }
     .status-active .status-dot {
-      background: #22c55e;
+      background: var(--st-ready);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--st-ready) 25%, transparent), 0 0 10px var(--st-ready);
       animation: pulse 2s infinite;
     }
     .status-inactive {
-      background: rgba(156, 163, 175, 0.1);
-      color: #9ca3af;
+      background: color-mix(in srgb, var(--color-sand) 20%, transparent);
+      color: var(--color-text-muted);
     }
     .status-inactive .status-dot {
-      background: #9ca3af;
+      background: var(--color-sand);
     }
     @keyframes pulse {
       0%, 100% { opacity: 1; }
