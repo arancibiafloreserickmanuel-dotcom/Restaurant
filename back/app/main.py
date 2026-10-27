@@ -317,6 +317,25 @@ async def _app_lifespan(app: FastAPI):
         logger.info(f"Database schema version: {db_version}")
     except Exception as e:
         logger.warning(f"Migration check failed: {e}", exc_info=True)
+
+    # Client-preview demo data (free-tier hosts have no Shell/pre-deploy command
+    # to run these by hand — see render.yaml). Both are safe to leave on across
+    # restarts: idempotent, and a no-op once there is nothing left to do.
+    if settings.remove_demo_data:
+        try:
+            from .seeds.remove_delis_demo import run as remove_delis_demo
+
+            remove_delis_demo()
+        except Exception as e:
+            logger.warning(f"Demo data removal failed: {e}", exc_info=True)
+    elif settings.seed_demo_data:
+        try:
+            from .seeds.seed_delis_demo import run as seed_delis_demo
+
+            seed_delis_demo()
+        except Exception as e:
+            logger.warning(f"Demo data seed failed: {e}", exc_info=True)
+
     from .reservation_reminder_heartbeat import reservation_reminder_heartbeat_loop
 
     stop_heartbeat = asyncio.Event()

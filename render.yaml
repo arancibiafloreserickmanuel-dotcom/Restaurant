@@ -13,13 +13,18 @@
 # and lands on the dashboard, no login screen. Leave both blank to show the
 # normal login page instead.
 #
-# Demo data: delis-back seeds a chicken menu, 4 tables and a spread of orders on
-# every deploy (back/app/seeds/seed_delis_demo.py), so the client sees a working
-# system instead of an empty one. Everything it creates is named with "(DEMO)" so
-# it is obvious it is not real, and `python -m app.seeds.remove_delis_demo` (run
-# from delis-back's Shell tab in Render) deletes exactly those rows and nothing
-# else — do that when you are ready to hand over a clean system, then delete the
-# preDeployCommand line below so it does not come back on the next deploy.
+# Demo data: free-tier Render has no Shell tab and no pre-deploy command, so
+# seeding runs at backend startup instead, gated by an env var on delis-back
+# (back/app/main.py, after migrations run):
+#   SEED_DEMO_DATA=true    -> adds a chicken menu, 4 tables and a spread of
+#                              orders, all named with "(DEMO)". Idempotent —
+#                              safe to leave true across restarts/redeploys.
+#   REMOVE_DEMO_DATA=true  -> deletes exactly those "(DEMO)"-named rows and
+#                              nothing else, once, then is a no-op. Takes
+#                              priority over SEED_DEMO_DATA if both are true.
+# Flip the value in delis-back's Environment tab and Render restarts the
+# service on its own (no manual deploy needed) — this is a normal env var,
+# not a build/deploy command, so it works on the free plan.
 #
 # Deploy: https://dashboard.render.com/blueprints -> New Blueprint Instance ->
 # point at this repo/branch (feature/delis-rebrand) -> Apply.
@@ -61,13 +66,13 @@ services:
     dockerContext: ./back
     plan: free
     healthCheckPath: /docs
-    # Idempotent: adds Deli's demo products/tables/orders if missing, skips if
-    # already there. Remove this line once you no longer want the demo reseeded
-    # (e.g. after running `python -m app.seeds.remove_delis_demo` from the Shell
-    # tab to clean it up for a real launch).
-    preDeployCommand: python -m app.seeds.seed_delis_demo
     envVars:
       - fromGroup: delis-shared-secrets
+      # See header comment: seeds Deli's demo data at startup (free-tier-safe).
+      - key: SEED_DEMO_DATA
+        value: "true"
+      - key: REMOVE_DEMO_DATA
+        value: "false"
       - key: DB_HOST
         fromDatabase: { name: delis-db, property: host }
       - key: DB_PORT

@@ -217,6 +217,14 @@ class Settings(BaseSettings):
     rate_limit_upload_per_hour: int = Field(
         default=10, validation_alias="RATE_LIMIT_UPLOAD_PER_HOUR"
     )
+
+    # Client-preview demo data (back/app/seeds/seed_delis_demo.py). Runs once at
+    # startup, after migrations, when true — safe to leave true across restarts
+    # (idempotent). See render.yaml. Mutually exclusive with REMOVE_DEMO_DATA.
+    seed_demo_data: bool = Field(default=False, validation_alias="SEED_DEMO_DATA")
+    # One-shot cleanup: deletes every "(DEMO)"-named row the seed above created,
+    # then stays a no-op on later restarts (there is nothing left to remove).
+    remove_demo_data: bool = Field(default=False, validation_alias="REMOVE_DEMO_DATA")
     rate_limit_admin_per_minute: int = Field(
         default=30, validation_alias="RATE_LIMIT_ADMIN_PER_MINUTE"
     )
