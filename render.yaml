@@ -1,13 +1,38 @@
-# Render.com blueprint: backend + ws-bridge + Postgres + Redis for the Deli's demo.
-# The Angular frontend is NOT deployed here — it goes to Vercel, which proxies
-# /api/* and /ws/* to the two web services below (see front/vercel.json), so the
-# browser only ever talks to one origin (the Vercel domain) and no CORS is needed
-# beyond listing that domain.
+# Render.com blueprint: the whole Deli's demo (frontend + backend + ws-bridge +
+# Postgres + Redis) on a single platform, for a client preview.
+#
+# The frontend is a static site that proxies /api/* and /ws/* to the two web
+# services below (see "routes"), so the browser only ever talks to one origin
+# (delis-front's own onrender.com URL) — no CORS configuration needed beyond
+# listing that one domain. (front/vercel.json is kept as an alternative if you
+# ever want the frontend on Vercel instead; unused here.)
+#
+# Login skip for the client: set DEMO_LOGIN_EMAIL / DEMO_LOGIN_PASSWORD on the
+# delis-front service to an account you created by visiting the deployed site's
+# /register once — opening the site then signs that account in automatically
+# and lands on the dashboard, no login screen. Leave both blank to show the
+# normal login page instead.
 #
 # Deploy: https://dashboard.render.com/blueprints -> New Blueprint Instance ->
 # point at this repo/branch (feature/delis-rebrand) -> Apply.
-# Afterwards, copy each web service's onrender.com URL into front/vercel.json's
-# rewrites and redeploy the Vercel project.
+#
+# After the first deploy, three manual edits (Render does not let a blueprint
+# safely guess these ahead of time):
+#  1. Render may have appended a suffix to a service's onrender.com subdomain
+#     if "delis-back" / "delis-ws-bridge" / "delis-front" were taken. If so,
+#     update delis-front's two route destinations below to the real URLs.
+#  2. Set delis-back's and delis-ws-bridge's CORS_ORIGINS to delis-front's
+#     real URL (https://delis-front[-xxxx].onrender.com, no trailing slash).
+#  3. Register an account via /register on the live site, then set
+#     DEMO_LOGIN_EMAIL / DEMO_LOGIN_PASSWORD on delis-front and redeploy it.
+
+envVarGroups:
+  - name: delis-shared-secrets
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: REFRESH_SECRET_KEY
+        generateValue: true
 
 databases:
   - name: delis-db
@@ -29,6 +54,7 @@ services:
     plan: free
     healthCheckPath: /docs
     envVars:
+      - fromGroup: delis-shared-secrets
       - key: DB_HOST
         fromDatabase: { name: delis-db, property: host }
       - key: DB_PORT
@@ -41,13 +67,9 @@ services:
         fromDatabase: { name: delis-db, property: database }
       - key: REDIS_URL
         fromService: { type: redis, name: delis-redis, property: connectionString }
-      - key: SECRET_KEY
-        generateValue: true
-      - key: REFRESH_SECRET_KEY
-        generateValue: true
-      # Comma-separated: your Vercel domain(s). Add the preview domain too if you use one.
+      # Fill in after the first deploy — see header comment, step 2.
       - key: CORS_ORIGINS
-        value: https://REPLACE-WITH-YOUR-VERCEL-DOMAIN.vercel.app
+        value: https://delis-front.onrender.com
       - key: STRIPE_CURRENCY
         value: bob
 
@@ -59,13 +81,39 @@ services:
     plan: free
     healthCheckPath: /health
     envVars:
+      - fromGroup: delis-shared-secrets
       - key: REDIS_URL
         fromService: { type: redis, name: delis-redis, property: connectionString }
-      - key: SECRET_KEY
-        sync: false # paste the same value generated for delis-back's SECRET_KEY
       - key: ALGORITHM
         value: HS256
       - key: API_URL
         fromService: { type: web, name: delis-back, property: host }
+      # Fill in after the first deploy — see header comment, step 2.
       - key: CORS_ORIGINS
-        value: https://REPLACE-WITH-YOUR-VERCEL-DOMAIN.vercel.app
+        value: https://delis-front.onrender.com
+
+  - type: web
+    name: delis-front
+    runtime: static
+    rootDir: front
+    buildCommand: npm ci --ignore-scripts && node scripts/write-dev-login.js && npm run build -- --configuration production-static
+    staticPublishPath: ./dist/front/browser
+    envVars:
+      # Fill in after you've registered via /register on the live site — see
+      # header comment, step 3. Leave both blank to show the normal login page.
+      - key: DEMO_LOGIN_EMAIL
+        value: ""
+      - key: DEMO_LOGIN_PASSWORD
+        value: ""
+    routes:
+      # Update these two if Render suffixed delis-back / delis-ws-bridge's
+      # subdomain — see header comment, step 1.
+      - type: rewrite
+        source: /api/*
+        destination: https://delis-back.onrender.com/*
+      - type: rewrite
+        source: /ws/*
+        destination: https://delis-ws-bridge.onrender.com/*
+      - type: rewrite
+        source: /*
+        destination: /index.html

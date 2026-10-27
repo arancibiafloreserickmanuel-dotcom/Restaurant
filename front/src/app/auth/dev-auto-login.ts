@@ -1,13 +1,16 @@
-import { inject, isDevMode } from '@angular/core';
+import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../services/api.service';
 
 /**
- * Local development shortcut (Angular dev mode only; compiled out of production builds).
- * Signs in with the credentials in `public/dev-login.json` (gitignored) so the
- * landing and login pages are skipped. The backend authentication is untouched:
- * the session is a real login against POST /token.
+ * Auto sign-in shortcut: used for local dev, and for a client-preview deploy that
+ * should skip the landing/login pages. Active only when `public/dev-login.json`
+ * exists — gitignored locally (see .gitignore), and on a client-preview deploy it
+ * is generated at build time by scripts/write-dev-login.js from DEMO_LOGIN_EMAIL /
+ * DEMO_LOGIN_PASSWORD env vars (see render.yaml). Absent that file, this guard is
+ * a no-op and the normal landing/login flow runs. The backend authentication is
+ * untouched either way: the session is a real login against POST /token.
  */
 async function devSignIn(api: ApiService): Promise<boolean> {
   try {
@@ -29,11 +32,8 @@ async function devSignIn(api: ApiService): Promise<boolean> {
   }
 }
 
-/** On `/` and `/login`: in dev mode, auto sign in and go straight to the dashboard. */
+/** On `/` and `/login`: if dev-login.json exists, auto sign in and go straight to the dashboard. */
 export const devSkipLoginGuard: CanActivateFn = async () => {
-  if (!isDevMode()) {
-    return true;
-  }
   const router = inject(Router);
   const signedIn = await devSignIn(inject(ApiService));
   return signedIn ? router.createUrlTree(['/dashboard']) : true;
