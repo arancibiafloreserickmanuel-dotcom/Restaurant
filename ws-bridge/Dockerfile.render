@@ -1,0 +1,16 @@
+# Standalone Dockerfile for deploying ws-bridge outside docker-compose (e.g. Render).
+# The default ./Dockerfile uses Compose's `additional_contexts: pos-back: service:back`
+# to reuse the back service's image as its base — a Compose-only feature. This copy
+# builds from the same public base image the back service itself uses, so it works
+# as a standalone build on Render/Railway/Fly, with no dependency on another service's build.
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY main.py .
+
+EXPOSE 8021
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8021", "--log-level", "info", "--access-log"]

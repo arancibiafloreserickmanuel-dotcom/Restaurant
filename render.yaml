@@ -1,0 +1,71 @@
+# Render.com blueprint: backend + ws-bridge + Postgres + Redis for the Deli's demo.
+# The Angular frontend is NOT deployed here — it goes to Vercel, which proxies
+# /api/* and /ws/* to the two web services below (see front/vercel.json), so the
+# browser only ever talks to one origin (the Vercel domain) and no CORS is needed
+# beyond listing that domain.
+#
+# Deploy: https://dashboard.render.com/blueprints -> New Blueprint Instance ->
+# point at this repo/branch (feature/delis-rebrand) -> Apply.
+# Afterwards, copy each web service's onrender.com URL into front/vercel.json's
+# rewrites and redeploy the Vercel project.
+
+databases:
+  - name: delis-db
+    databaseName: delis
+    user: delis
+    plan: free
+
+services:
+  - type: redis
+    name: delis-redis
+    plan: free
+    ipAllowList: []
+
+  - type: web
+    name: delis-back
+    runtime: docker
+    dockerfilePath: ./back/Dockerfile
+    dockerContext: ./back
+    plan: free
+    healthCheckPath: /docs
+    envVars:
+      - key: DB_HOST
+        fromDatabase: { name: delis-db, property: host }
+      - key: DB_PORT
+        fromDatabase: { name: delis-db, property: port }
+      - key: DB_USER
+        fromDatabase: { name: delis-db, property: user }
+      - key: DB_PASSWORD
+        fromDatabase: { name: delis-db, property: password }
+      - key: DB_NAME
+        fromDatabase: { name: delis-db, property: database }
+      - key: REDIS_URL
+        fromService: { type: redis, name: delis-redis, property: connectionString }
+      - key: SECRET_KEY
+        generateValue: true
+      - key: REFRESH_SECRET_KEY
+        generateValue: true
+      # Comma-separated: your Vercel domain(s). Add the preview domain too if you use one.
+      - key: CORS_ORIGINS
+        value: https://REPLACE-WITH-YOUR-VERCEL-DOMAIN.vercel.app
+      - key: STRIPE_CURRENCY
+        value: bob
+
+  - type: web
+    name: delis-ws-bridge
+    runtime: docker
+    dockerfilePath: ./ws-bridge/Dockerfile.render
+    dockerContext: ./ws-bridge
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: REDIS_URL
+        fromService: { type: redis, name: delis-redis, property: connectionString }
+      - key: SECRET_KEY
+        sync: false # paste the same value generated for delis-back's SECRET_KEY
+      - key: ALGORITHM
+        value: HS256
+      - key: API_URL
+        fromService: { type: web, name: delis-back, property: host }
+      - key: CORS_ORIGINS
+        value: https://REPLACE-WITH-YOUR-VERCEL-DOMAIN.vercel.app

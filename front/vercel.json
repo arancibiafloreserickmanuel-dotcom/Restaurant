@@ -1,0 +1,9 @@
+{
+  "buildCommand": "npm run build -- --configuration production-static",
+  "outputDirectory": "dist/front/browser",
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://REPLACE-WITH-YOUR-BACKEND.onrender.com/:path*" },
+    { "source": "/ws/:path*", "destination": "https://REPLACE-WITH-YOUR-WS-BRIDGE.onrender.com/:path*" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
